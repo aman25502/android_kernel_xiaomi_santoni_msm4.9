@@ -10,7 +10,7 @@ export TZ="Asia/Dhaka";
 # Kernel compiling script
 mkdir -p $HOME/TC
 git clone https://github.com/Bikram557/AnyKernel3 -b master
-git clone https://github.com/kdrag0n/proton-clang.git prebuilts/proton-clang --depth=1
+git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-9.0.0_r55 $HOME/TC/aarch64-linux-gnu-4.9 --depth=1
 
 # Upload log to del.dog
 function sendlog {
@@ -49,7 +49,7 @@ mkdir -p ${KERNELDIR}/aroma
 mkdir -p ${KERNELDIR}/files
 
 export KERNELNAME="SolarisKernel"
-export BUILD_CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-8.x/bin/aarch64-linux-gnu-"
+export BUILD_CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-4.9/bin/aarch64-linux-gnu-"
 export SRCDIR="${KERNELDIR}";
 export OUTDIR="${KERNELDIR}/out";
 export ANYKERNEL="${KERNELDIR}/AnyKernel3";
