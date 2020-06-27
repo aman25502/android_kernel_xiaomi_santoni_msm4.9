@@ -10,8 +10,8 @@ export TZ="Asia/Dhaka";
 # Kernel compiling script
 mkdir -p $HOME/TC
 git clone https://github.com/Bikram557/AnyKernel3 -b master
-git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 -b lineage-17.1 aarch64-linux-android --depth=1
-git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 -b lineage-17.1 arm-linux-androideabi --depth=1
+git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 -b lineage-17.1 aarch64-linux-android
+git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 -b lineage-17.1 arm-linux-androideabi
 
 # Upload log to del.dog
 function sendlog {
@@ -55,11 +55,10 @@ export CROSS_COMPILE_ARM32=arm-linux-androideabi-
 export SRCDIR="${KERNELDIR}";
 export OUTDIR="${KERNELDIR}/out";
 export ANYKERNEL="${KERNELDIR}/AnyKernel3";
-export AROMA="${KERNELDIR}/aroma/";
 export ARCH="arm64";
 export SUBARCH="arm64";
-export CROSS_COMPILE="$HOME/TC/aarch64-linux-android/bin/aarch64-linux-android-"
-export CROSS_COMPILE_ARM32="$HOME/TC/arm-linux-androideabi/bin/arm-linux-androideabi-"
+export CROSS_COMPILE="$KERNELDIR/aarch64-linux-android/bin/aarch64-linux-android-"
+export CROSS_COMPILE_ARM32="$KERNELDIR/arm-linux-androideabi/bin/arm-linux-androideabi-"
 export KBUILD_BUILD_USER="Bikram_M"
 export KBUILD_BUILD_HOST="Santoni-Project"
 export DEFCONFIG="santoni_defconfig";
@@ -67,7 +66,7 @@ export ZIP_DIR="${KERNELDIR}/files";
 export IMAGE="${OUTDIR}/arch/${ARCH}/boot/Image.gz-dtb";
 export COMMITMSG=$(git log --oneline -1)
 
-export MAKE_TYPE="NonTreble"
+export MAKE_TYPE="Pie-NonTreble"
 
 if [[ -z "${JOBS}" ]]; then
     export JOBS="$(nproc --all)";
