@@ -2,15 +2,15 @@
 export KERNELDIR="$PWD" 
 export USE_CCACHE=1
 export CCACHE_DIR="$HOME/.ccache"
-git config --global user.email "kitkatmukherjee2015@gmail.com"
-git config --global user.name "bikram557"
+git config --global user.email "soniataran79@gmail.com"
+git config --global user.name "aman25502"
  
 export TZ="Asia/Kolkata";
  
 # Kernel compiling script
 mkdir -p $HOME/TC
-git clone https://github.com/Bikram557/AnyKernel3.git -b master
-git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-9.0.0_r55 $HOME/TC/aarch64-linux-gnu-4.9 --depth=1
+git clone https://github.com/aman25502/AnyKernel3 -b santoni 
+git clone https://github.com/kdrag0n/proton-clang.git prebuilts/proton-clang --depth=1
 
 # Upload log to del.dog
 function sendlog {
@@ -19,7 +19,7 @@ function sendlog {
     file=$(jq -r .key <<< $content)
     log="https://del.dog/$file"
     echo "URL is: "$log" "
-    curl -s -X POST https://api.telegram.org/bot1105001387:AAEb1sgfaKcP1Hd4-9yDBTNZNxfzFnp05pM/sendMessage -d text="Build failed, "$1" "$log" :3" -d chat_id=-1001438359204
+    curl -s -X POST https://api.telegram.org/bot1294950340:AAF3nyGc8fOZtZ7wkAneQOkiORWZ_1YW2q8/sendMessage -d text="Build failed, "$1" "$log" :3" -d chat_id=-1001349965943
 }
  
 # Trim the log if build fails
@@ -35,8 +35,8 @@ function transfer() {
     url="$(curl -# -T $1 https://transfer.sh)";
     printf '\n';
     echo -e "Download ${zipname} at ${url}";
-    curl -s -X POST https://api.telegram.org/bot1105001387:AAEb1sgfaKcP1Hd4-9yDBTNZNxfzFnp05pM/sendMessage -d text="$url" -d chat_id=-1001438359204
-    curl -F chat_id="-1001438359204" -F document=@"${ZIP_DIR}/$ZIPNAME" https://api.telegram.org/bot1105001387:AAEb1sgfaKcP1Hd4-9yDBTNZNxfzFnp05pM/sendDocument
+    curl -s -X POST https://api.telegram.org/bot1294950340:AAF3nyGc8fOZtZ7wkAneQOkiORWZ_1YW2q8/sendMessage -d text="$url" -d chat_id=-1001349965943
+    curl -F chat_id="-1001349965943" -F document=@"${ZIP_DIR}/$ZIPNAME" https://api.telegram.org/bot1294950340:AAF3nyGc8fOZtZ7wkAneQOkiORWZ_1YW2q8/sendDocument
 }
  
 if [[ -z ${KERNELDIR} ]]; then
@@ -48,8 +48,8 @@ fi
 mkdir -p ${KERNELDIR}/aroma
 mkdir -p ${KERNELDIR}/files
 
-export KERNELNAME="RockstarKernel" 
-export BUILD_CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-4.9/bin/aarch64-linux-gnu-"
+export KERNELNAME="Testkernelpsolaris"
+export BUILD_CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-8.x/bin/aarch64-linux-gnu-"
 export SRCDIR="${KERNELDIR}";
 export OUTDIR="${KERNELDIR}/out";
 export ANYKERNEL="${KERNELDIR}/AnyKernel3";
@@ -57,22 +57,22 @@ export AROMA="${KERNELDIR}/aroma/";
 export ARCH="arm64";
 export SUBARCH="arm64";
 export KBUILD_COMPILER_STRING="$($KERNELDIR/prebuilts/proton-clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-export KBUILD_BUILD_USER="Bikram_M"
-export KBUILD_BUILD_HOST="Santoni-Project"
+export KBUILD_BUILD_USER="AHOY"
+export KBUILD_BUILD_HOST="AHOYTESTKERNELS"
 export PATH="$KERNELDIR/prebuilts/proton-clang/bin:${PATH}"
-export DEFCONFIG="santoni_defconfig";
+export DEFCONFIG="santoni_treble_defconfig";
 export ZIP_DIR="${KERNELDIR}/files";
 export IMAGE="${OUTDIR}/arch/${ARCH}/boot/Image.gz-dtb";
 export COMMITMSG=$(git log --oneline -1)
  
-export MAKE_TYPE="Pie-NonTreble"
+export MAKE_TYPE="Treble"
  
 if [[ -z "${JOBS}" ]]; then
     export JOBS="$(nproc --all)";
 fi
  
 export MAKE="make O=${OUTDIR}";
-export ZIPNAME="${KERNELNAME}-Santoni-${MAKE_TYPE}$(date +%m%d-%H).zip"
+export ZIPNAME="${KERNELNAME}-REDMI-4X-${MAKE_TYPE}$(date +%m%d-%H).zip"
 export FINAL_ZIP="${ZIP_DIR}/${ZIPNAME}"
  
 [ ! -d "${ZIP_DIR}" ] && mkdir -pv ${ZIP_DIR}
@@ -86,11 +86,11 @@ MAKE_STATEMENT=make
 # Menuconfig configuration
 # ================
 # If -no-menuconfig flag is present we will skip the kernel configuration step.
-# Make operation will use santoni_defconfig directly.
+# Make operation will use santoni_treble_defconfig directly.
 if [[ "$*" == *"-no-menuconfig"* ]]
 then
   NO_MENUCONFIG=1
-  MAKE_STATEMENT="$MAKE_STATEMENT KCONFIG_CONFIG=./arch/arm64/configs/santoni_defconfig"
+  MAKE_STATEMENT="$MAKE_STATEMENT KCONFIG_CONFIG=./arch/arm64/configs/santoni_treble_defconfig"
 fi
  
 if [[ "$@" =~ "mrproper" ]]; then
@@ -104,7 +104,7 @@ fi
  
 # Send Message about build started
 # ================
-curl -s -X POST https://api.telegram.org/bot1105001387:AAEb1sgfaKcP1Hd4-9yDBTNZNxfzFnp05pM/sendMessage -d text="Build Scheduled for $KERNELNAME (${MAKE_TYPE})" -d chat_id=-1001438359204
+curl -s -X POST https://api.telegram.org/bot1294950340:AAF3nyGc8fOZtZ7wkAneQOkiORWZ_1YW2q8/sendMessage -d text="Build Scheduled for $KERNELNAME Kernel (${MAKE_TYPE})" -d chat_id=-1001349965943
  
  
  
@@ -115,9 +115,8 @@ echo -e "Using ${JOBS} threads to compile"
  
 # Start the build
 # ================
-${MAKE} -j${JOBS} \ ARCH=arm64 \ CROSS_COMPILE="$HOME/TC/aarch64-linux-gnu-4.9/bin/aarch64-linux-android-" | tee build-log.txt ;
- 
- 
+${MAKE} -j${JOBS} \ ARCH=arm64 \ CC=clang  \ CROSS_COMPILE=aarch64-linux-gnu- \ CROSS_COMPILE_ARM32=arm-linux-gnueabi- \ NM=llvm-nm \ OBJCOPY=llvm-objcopy \ OBJDUMP=llvm-objdump \ STRIP=llvm-strip  | tee build-log.txt ;
+
 exitCode="$?";
 END=$(date +"%s")
 DIFF=$(($END - $START))
@@ -151,27 +150,21 @@ then
   if [[ ${success} == true ]]; then
    
  
-message="CI build of Rockstar Kernel completed with the latest commit."
+message="CI build of Test Kernel completed with the latest commit."
 
 time="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 
-curl -F chat_id="-1001438359204" -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="$message $time" https://api.telegram.org/bot1105001387:AAEb1sgfaKcP1Hd4-9yDBTNZNxfzFnp05pM/sendDocument
+curl -F chat_id="-1001349965943" -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="$message $time" https://api.telegram.org/bot1294950340:AAF3nyGc8fOZtZ7wkAneQOkiORWZ_1YW2q8/sendDocument
 
-curl -s -X POST https://api.telegram.org/bot1105001387:AAEb1sgfaKcP1Hd4-9yDBTNZNxfzFnp05pM/sendMessage -d text="
+curl -s -X POST https://api.telegram.org/bot1294950340:AAF3nyGc8fOZtZ7wkAneQOkiORWZ_1YW2q8/sendMessage -d text="
 ♔♔♔♔♔♔♔BUILD-DETAILS♔♔♔♔♔♔♔
-
-🖋️ <b>Author</b>     : <code>Bikram Mukherjee</code>
-
+🖋️ <b>Author</b>     : <code>AHOY</code>
 🛠️ <b>Make-Type</b>  : <code>$MAKE_TYPE</code>
-
 🗒️ <b>Build-Type</b>  : <code>TEST</code>
-
 ⌚ <b>Build-Time</b> : <code>$time</code>
-
 🗒️ <b>Zip-Name</b>   : <code>$ZIPNAME</code>
-
 🤖 <b>Commit message</b> : <code>$COMMITMSG</code>
-"  -d chat_id=-1001438359204 -d "parse_mode=html"
+"  -d chat_id=-1001349965943 -d "parse_mode=html"
  
  
 fi
